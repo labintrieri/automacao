@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__) # Cria uma instância do Flask. 
 
-mongodb_uri = MONGO_URI
-db = MongoClient(mongodb_uri, ssl=True, tlsAllowInvalidCertificates=True)[MONGO_ID]
+mongodb_uri = 'MONGO_URI'
+db = MongoClient(mongodb_uri, ssl=True, tlsAllowInvalidCertificates=True)['MONGO_ID']
 
 # Define rota da página principal!
 @app.route('/')
