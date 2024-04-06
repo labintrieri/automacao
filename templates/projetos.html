@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Projetos - Laura Intrieri</title>
+    <style>
+        /* Reset CSS básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Estilos personalizados para o seu portfólio */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1, p {
+            text-align: center;
+            margin: 20px;
+        }
+
+        select {
+            display: block;
+            margin: 20px auto;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+    <script>
+        function redirecionarParaPagina() {
+            var pagina = document.getElementById("menuPaginas").value;
+            window.location.href = pagina;
+        }
+    </script>
+</head>
+<body>
+    <header>
+    <h1>Projetos no GitHub</h1>
+    <p>Abaixo, meus projetos em jornalismo de dados mais recentes:</p>
+    </header>
+
+    <select id="menuPaginas" onchange="redirecionarParaPagina()">
+        <option value="">Selecione uma Página</option>
+        <option value="/">Página Inicial</option>
+        <option value="/infos">Informações</option>
+        <option value="/publicacoes">Publicações</option>
+    </select>
+
+    <div style="text-align: left;">
+        <ul class="project-list">
+            <li class="project" style="text-align: left;">
+                <h2>Criminosos colocam links de apostas e abuso de menores em sites de governo</h2>
+                <p style="text-align: left;"><b>Descrição:</b> Investigação sobre criminosos que inserem links de apostas e abuso de menores em sites governamentais.</p>
+                <p style="text-align: left;"><b>Site de publicação:</b> Terra Byte.</p>
+                <p style="text-align: left;"><b>Data de Publicação:</b> 22 de dezembro de 2023</p>
+                <a href="https://github.com/labintrieri/sites-apostas-govbr/blob/main/README.md">Link para o projeto</a>
+            </li>
+            <li class="project" style="text-align: left;">
+                <h2>Fortune Tiger: jogo ilegal na mira da polícia inundou YouTube neste ano</h2>
+                <p style="text-align: left;"><b>Descrição:</b> Investigações sobre vídeos do jogo Fortune Tiger no YouTube.</p>
+                <p style="text-align: left;"><b>Site de publicação:</b> Terra Byte</p>
+                <p style="text-align: left;"><b>Data de Publicação:</b> 05 de outubro de 2023</p>
+                <a href="https://github.com/labintrieri/fortune-tiger-youtube">Link para o projeto</a>
+            </li>
+                    </ul>
+    </div>
+    
+
+</body>
+<ul>
+<footer>
+    <p>&copy; 2024 Laura Intrieri</p>
+</footer>
+</html>
