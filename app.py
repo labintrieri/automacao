@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__) # Cria uma instância do Flask. 
 
 
-# Define rota da página principal
+# Define rota da página principal!
 @app.route('/')
 def index():
     return render_template('index.html') # Renderiza o template index.html, localizado na pasta templates
