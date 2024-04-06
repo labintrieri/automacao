@@ -11,6 +11,10 @@ def index():
 def infos():
  return render_template('infos.html')
 
+@app.route("/sesc")
+def sesc():
+ return render_template('sesc.html')
+
 @app.route("/projetos")
 def projetos():
  return render_template('projetos.html')
