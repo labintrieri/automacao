@@ -111,3 +111,23 @@
         <option value="/publicacoes">Publicações</option>
     </select>
 </div>
+
+<header>
+    <h1>Raspagem de eventos do Sesc</h1>
+</header>
+
+<div class="container">
+    
+    <div class="eventos">
+        <h2>Eventos</h2>
+        {% for evento in documentos %}
+            <div class="eventos">
+                <h3>Evento</h3>
+                <p>{{ evento.titulo}}</p>
+            </div>
+        {% endfor %}
+    </div>
+    
+</div>
+</body>
+</html>

@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__) # Cria uma instância do Flask. 
 
+mongodb_uri = MONGO_URI
+db = MongoClient(mongodb_uri, ssl=True, tlsAllowInvalidCertificates=True)[MONGO_ID]
 
 # Define rota da página principal!
 @app.route('/')
@@ -13,7 +15,11 @@ def infos():
 
 @app.route("/sesc")
 def sesc():
- return render_template('sesc.html')
+    documentos = list(db.eventos.find())
+    if documentos:
+        return render_template('sesc.html', documentos=documentos)
+    else:
+        return "Informações do Sesc não encontradas", 404
 
 @app.route("/projetos")
 def projetos():
