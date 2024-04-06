@@ -2,3 +2,4 @@ Flask>3
 gunicorn
 lxml
 requests
+pymongo
