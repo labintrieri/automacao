@@ -1,17 +1,17 @@
 # Master em Jornalismo de Dados - Insper
 ## Parte individual do trabalho final da disciplina Algoritmos de Automação
 
-- [ ] Colocar as páginas que foram criadas no trabalho anterior para funcionar em seu site no Render, usando como base o código feito durante aula com o Flask.
+- [x] Colocar as páginas que foram criadas no trabalho anterior para funcionar em seu site no Render, usando como base o código feito durante aula com o Flask.
 - [ ] Criar pelo menos uma página cujo HTML é gerado dinamicamente e exiba conteúdos derivados de algum processo de captura/limpeza/análise de dados (dê preferência por utilizar algum código que você já tenha feito em outra disciplina).
 - [ ] Implementar um robô do Telegram que possua alguma utilidade (por exemplo, forneça alguma informação ao usuário). Para isso, terá que necessariamente utilizar o Webhook do Telegram (o robô precisa estar online para que possa ser avaliado).
 
 
 # Organização
 
-Site no Render: <coloque aqui o link>
-Página dinâmica dentro do site: <coloque aqui o link>
-Repositório no Github: <coloque aqui o link>
-Username no Telegram: <coloque aqui o @ ou "não aplicável">
+- Site no Render: <(https://automacao-individual.onrender.com/)>
+- Página dinâmica dentro do site: <coloque aqui o link>
+- Repositório no Github: <coloque aqui o link>
+- Username no Telegram: <coloque aqui o @ ou "não aplicável">
 
 # Apresentação
 
