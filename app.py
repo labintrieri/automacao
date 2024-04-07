@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__) # Cria uma instância do Flask. 
 from pymongo import MongoClient
+import os
 
 mongodb_uri = 'MONGO_URI'
 db = MongoClient(mongodb_uri, ssl=True, tlsAllowInvalidCertificates=True)['MONGO_ID']
@@ -16,7 +17,7 @@ def infos():
 
 @app.route("/sesc")
 def sesc():
-    documentos = list(db.eventos.find())
+    documentos = list(db.eventos.find().sort("dataProxSessao",-1).limit(10))
     if documentos:
         return render_template('sesc.html', documentos=documentos)
     else:

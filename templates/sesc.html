@@ -117,17 +117,22 @@
 </header>
 
 <div class="container">
-    
-    <div class="eventos">
-        <h2>Eventos</h2>
-        {% for evento in documentos %}
-            <div class="eventos">
-                <h3>Evento</h3>
-                <p>{{ evento.titulo}}</p>
-            </div>
-        {% endfor %}
-    </div>
-    
+    <h2>Eventos Recentes do Sesc</h2>
+    {% for evento in documentos %}
+        <div class="evento">
+            <img src="{{ evento.imagem }}" alt="Imagem do evento" style="width:100px; height:auto;">
+            <h3>{{ evento.titulo }}</h3>
+            <p>{{ evento.complemento }}</p>
+            <p>Data da próxima sessão: {{ evento.dataProxSessao }}</p>
+            <p>Categorias: 
+                {% for categoria in evento.categorias %}
+                    {{ categoria.titulo }}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+            <a href="https://www.sescsp.org.br{{ evento.link }}" target="_blank">Mais informações</a>
+        </div>
+    {% endfor %}
+    </div>   
 </div>
 </body>
 </html>
