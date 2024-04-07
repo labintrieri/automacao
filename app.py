@@ -3,8 +3,8 @@ app = Flask(__name__) # Cria uma instância do Flask.
 from pymongo import MongoClient
 import os
 
-mongodb_uri = 'MONGO_URI'
-db = MongoClient(mongodb_uri, ssl=True, tlsAllowInvalidCertificates=True)['MONGO_ID']
+mongodb_uri = os.getenv('MONGO_URI')
+db = MongoClient(mongodb_uri, ssl=True, tlsAllowInvalidCertificates=True)[os.getenv('MONGO_ID')]
 
 # Define rota da página principal!
 @app.route('/')
