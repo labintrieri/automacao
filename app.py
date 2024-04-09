@@ -4,7 +4,7 @@ import os
 import requests
 import os 
 
-BOT_TOKEN = os.environ("TELEGRAM_BOT_TOKEN")
+BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 app = Flask(__name__) # Cria uma instância do Flask.
 
 # Busca os valores das variáveis de ambiente
