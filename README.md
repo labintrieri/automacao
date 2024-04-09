@@ -2,16 +2,16 @@
 ## Parte individual do trabalho final da disciplina Algoritmos de Automação
 
 - [x] Colocar as páginas que foram criadas no trabalho anterior para funcionar em seu site no Render, usando como base o código feito durante aula com o Flask.
-- [ ] Criar pelo menos uma página cujo HTML é gerado dinamicamente e exiba conteúdos derivados de algum processo de captura/limpeza/análise de dados (dê preferência por utilizar algum código que você já tenha feito em outra disciplina).
+- [x] Criar pelo menos uma página cujo HTML é gerado dinamicamente e exiba conteúdos derivados de algum processo de captura/limpeza/análise de dados (dê preferência por utilizar algum código que você já tenha feito em outra disciplina).
 - [ ] Implementar um robô do Telegram que possua alguma utilidade (por exemplo, forneça alguma informação ao usuário). Para isso, terá que necessariamente utilizar o Webhook do Telegram (o robô precisa estar online para que possa ser avaliado).
 
 
 # Organização
 
 - Site no Render: <(https://automacao-individual.onrender.com/)>
-- Página dinâmica dentro do site: <coloque aqui o link>
-- Repositório no Github: <coloque aqui o link>
-- Username no Telegram: <coloque aqui o @ ou "não aplicável">
+- Página dinâmica dentro do site: <(https://automacao-individual.onrender.com/sesc)>
+- Repositório no Github: <https://github.com/labintrieri/automacao-individual>
+- Username no Telegram: <@MeuSescBot>
 
 # Apresentação
 
@@ -24,6 +24,7 @@ index.html - página inicial que apresenta mapa da página
 infos.html - informações para contato
 projetos.html - projetos em jornalismo de dados
 publicacoes.html - publicações na imprensa
+sesc.html - página dinâmica que exibe conteúdo raspado do portal do Sesc
 
 ## Dificuldades
 Configuração de ambiente para deploy no Render (gunicorn)
