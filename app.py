@@ -1,7 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 import os
+import requests
+import os 
 
+BOT_TOKEN = os.environ("TELEGRAM_BOT_TOKEN")
 app = Flask(__name__) # Cria uma instância do Flask.
 
 # Busca os valores das variáveis de ambiente
@@ -36,6 +39,15 @@ def projetos():
 @app.route("/publicacoes")
 def publicacoes():
     return render_template('publicacoes.html')
+
+@app.route("/telegram", methods=["POST"])
+def telegram_update():
+    update = request.json
+    url_envio_mensagem = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    chat_id = update["message"]["chat"]["id"]
+    mensagem = {"chat_id": chat_id, "text": "mensagem <b>recebida</b>!", "parse_mode": "HTML"}
+    requests.post(url_envio_mensagem, data=mensagem)
+    return "ok"
 
 if __name__ == '__main__':
     # A configuração de debug=True é útil para desenvolvimento, mas deve ser desativada em produção
