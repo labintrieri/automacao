@@ -35,7 +35,7 @@ def infos():
 
 @app.route("/sesc")
 def sesc():
-    documentos = list(db.eventos.find().sort("dataPrimeiraSessao", -1).limit(10))
+    documentos = list(db.eventos.find().sort("dataPrimeiraSessao", -1).limit(20))
     
     if documentos:
         return render_template('sesc.html', documentos=documentos)
@@ -56,16 +56,16 @@ def telegram_update():
     chat_id = update["message"]["chat"]["id"]
     data_atual_iso = datetime.now().isoformat()
 
-    eventos = list(db.eventos.find({"dataPrimeiraSessao": {"$gte": data_atual_iso}}).sort("dataPrimeiraSessao", 1).limit(10))
+    eventos = list(db.eventos.find({"dataPrimeiraSessao": {"$gte": data_atual_iso}}).sort("dataPrimeiraSessao", 1).limit(20))
 
     if eventos:
-        mensagem = "Oi! Esses são os próximos eventos anunciados no Sesc:\n\n"
+        mensagem = "Oi! Vem ver o que tá rolando de bom no Sesc:\n\n"
         for evento in eventos:
             data_primeira_sessao = datetime.fromisoformat(evento['dataPrimeiraSessao'])
             data_formatada = data_primeira_sessao.strftime('%d/%m/%Y às %H:%M')
             mensagem += f"📅 <b>{evento['titulo']}</b>\n"
             mensagem += f"{evento['complemento']}\n"
-            mensagem += f"Data da primeira sessão: {data_formatada}\n"
+            mensagem += f"Quando? {data_formatada}\n"
             if 'categorias' in evento:
                 mensagem += "Categorias: " + ", ".join(categoria['titulo'] for categoria in evento['categorias']) + "\n"
             if evento['unidade']:
