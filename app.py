@@ -35,8 +35,8 @@ def infos():
 
 @app.route("/sesc")
 def sesc():
-    documentos = list(db.eventos.find().sort("dataPrimeiraSessao", -1).limit(20))
-    
+    data_atual_iso = datetime.now().isoformat()
+    documentos = list(db.eventos.find({"dataPrimeiraSessao": {"$gte": data_atual_iso}}).sort("dataPrimeiraSessao", 1).limit(10))
     if documentos:
         return render_template('sesc.html', documentos=documentos)
     else:
