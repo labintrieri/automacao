@@ -4,6 +4,7 @@ import os
 import requests
 from datetime import datetime
 
+data_atual = datetime.now().strftime("%Y-%m-%dT%H:%M")
 
 BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 app = Flask(__name__) 
@@ -53,19 +54,23 @@ def publicacoes():
 def telegram_update():
     update = request.json
     chat_id = update["message"]["chat"]["id"]
-    eventos = list(db.eventos.find().sort("dataPrimeiraSessao", -1).limit(10))
+    data_atual_iso = datetime.now().isoformat()
+
+    eventos = list(db.eventos.find({"dataPrimeiraSessao": {"$gte": data_atual_iso}}).sort("dataPrimeiraSessao", 1).limit(10))
+
     if eventos:
-        mensagem = "Oi! Esses são os últimos eventos anunciados no Sesc:\n\n"
+        mensagem = "Oi! Esses são os próximos eventos anunciados no Sesc:\n\n"
         for evento in eventos:
+            data_primeira_sessao = datetime.fromisoformat(evento['dataPrimeiraSessao'])
+            data_formatada = data_primeira_sessao.strftime('%d/%m/%Y às %H:%M')
             mensagem += f"📅 <b>{evento['titulo']}</b>\n"
             mensagem += f"{evento['complemento']}\n"
+            mensagem += f"Data da primeira sessão: {data_formatada}\n"
             if 'categorias' in evento:
                 mensagem += "Categorias: " + ", ".join(categoria['titulo'] for categoria in evento['categorias']) + "\n"
             if evento['unidade']:
                 mensagem += "Unidade: " + ", ".join(unidade['name'] for unidade in evento['unidade']) + "\n"
             mensagem += f"<a href='https://www.sescsp.org.br{evento['link']}'>Mais informações</a>\n\n"
-            mensagem += f"Unidade: {evento['unidade'][0]['name']}\n"
-
     else:
         mensagem = "Desculpe, não encontramos eventos recentes no Sesc."
 
