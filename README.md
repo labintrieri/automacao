@@ -8,9 +8,9 @@
 
 # Organização
 
-- Site no Render: <(https://automacao-individual.onrender.com/)>
-- Página dinâmica dentro do site: <(https://automacao-individual.onrender.com/sesc)>
-- Repositório no Github: <https://github.com/labintrieri/automacao-individual>
+- Site no Render: <(https://automacao-rby3.onrender.com/)>
+- Página dinâmica dentro do site: <(https://automacao-rby3.onrender.com/sesc)>
+- Repositório no Github: <https://github.com/labintrieri/automacao>
 - Username no Telegram: <@laura_mjd_bot>
 - Planilhas no Google Sheets:: não aplicável
 - Meu programa envia emails: não
@@ -33,11 +33,11 @@ Configuração de ambiente para deploy no Render;
 Separar CSS.
 
 ## Aprendizados
-Independência de templates dos professores e autonomia na resolução de problemas
+Independência de templates dos professores e autonomia na resolução de problemas.
 
 # Entregáveis:
-- [ ] Conteúdo do repositório em formato ZIP (na página do repositório no Github, clique em "Code" > "Download ZIP").
-- [ ] Link para o repositório no Github (público).
-- [ ] Link para seu site no Render e da página dinâmica.
-- [ ] Username do robô no Telegram (caso use o robô).
-- [ ] Apresentar o trabalho por 3 a 5 minutos durante a última aula da disciplina (10/04).
+- [x] Conteúdo do repositório em formato ZIP (na página do repositório no Github, clique em "Code" > "Download ZIP").
+- [x] Link para o repositório no Github (público).
+- [x] Link para seu site no Render e da página dinâmica.
+- [x] Username do robô no Telegram (caso use o robô).
+- [x] Apresentar o trabalho por 3 a 5 minutos durante a última aula da disciplina (10/04).
