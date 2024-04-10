@@ -21,7 +21,6 @@ meses = {
 }
 
 
-
 client = MongoClient(mongodb_uri, ssl=True, tlsAllowInvalidCertificates=True)
 db = client[db_name]  
 
