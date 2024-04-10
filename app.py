@@ -43,11 +43,30 @@ def publicacoes():
 @app.route("/telegram", methods=["POST"])
 def telegram_update():
     update = request.json
-    url_envio_mensagem = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
     chat_id = update["message"]["chat"]["id"]
-    mensagem = {"chat_id": chat_id, "text": "mensagem <b>recebida</b>!", "parse_mode": "HTML"}
-    requests.post(url_envio_mensagem, data=mensagem)
+    
+    # Busca os últimos 5 eventos armazenados
+    eventos = list(db.eventos.find().sort("dataProxSessao", -1).limit(5))
+    
+    # Formata a mensagem com os dados dos eventos
+    if eventos:
+        mensagem = "Oi! Esses são os últimos eventos anunciados no Sesc:\n\n"
+        for evento in eventos:
+            mensagem += f"📅 <b>{evento['titulo']}</b>\n"
+            mensagem += f"{evento['complemento']}\n"
+            mensagem += f"Data da próxima sessão: {evento['dataProxSessao']}\n"
+            mensagem += "Categorias: " + ", ".join([categoria['titulo'] for categoria in evento['categorias']]) + "\n"
+            mensagem += f"Link: <a href='https://www.sescsp.org.br{evento['link']}'>Mais informações</a>\n\n"
+    else:
+        mensagem = "Desculpe, não encontramos eventos recentes no Sesc."
+
+    # Envia a mensagem formatada
+    url_envio_mensagem = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    dados_mensagem = {"chat_id": chat_id, "text": mensagem, "parse_mode": "HTML", "disable_web_page_preview": True}
+    requests.post(url_envio_mensagem, data=dados_mensagem)
+    
     return "ok"
+
 
 if __name__ == "__main__":
     app.run(debug=True)
