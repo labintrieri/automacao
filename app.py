@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, jsonify, render_template, request, redirect, url_for
 from pymongo import MongoClient
 import os
 import requests
@@ -6,9 +6,9 @@ from datetime import datetime
 
 
 BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-app = Flask(__name__) # Cria uma instância do Flask.
+app = Flask(__name__) 
 
-# Busca os valores das variáveis de ambiente
+
 mongodb_uri = os.getenv('MONGO_URI')
 db_name = os.getenv('MONGO_ID')
 
@@ -21,9 +21,9 @@ meses = {
 
 
 
-# Inicia a conexão com o MongoDB
+# conexão com o MongoDB
 client = MongoClient(mongodb_uri, ssl=True, tlsAllowInvalidCertificates=True)
-db = client[db_name]  # Usa o nome do banco de dados correto
+db = client[db_name]  
 
 @app.route('/')
 def index():
@@ -54,21 +54,16 @@ def publicacoes():
 def telegram_update():
     update = request.json
     chat_id = update["message"]["chat"]["id"]
-    
-    # Busca os últimos 5 eventos armazenados com base no _id
     eventos = list(db.eventos.find().sort("_id", -1).limit(5))
-    
     if eventos:
         mensagem = "Oi! Esses são os últimos eventos anunciados no Sesc:\n\n"
         for evento in eventos:
-            # Extrai componentes da data
+            # formatar datas
             data_evento = datetime.strptime(evento['dataProxSessao'], "%Y-%m-%dT%H:%M")
             dia = data_evento.day
             mes = meses[data_evento.month]
             ano = data_evento.year
             hora = data_evento.strftime("%Hh%M")
-            
-            # Monta a data formatada
             data_formatada = f"{dia} de {mes} de {ano}, às {hora}"
             
             mensagem += f"📅 <b>{evento['titulo']}</b>\n"
@@ -83,10 +78,109 @@ def telegram_update():
     url_envio_mensagem = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
     dados_mensagem = {"chat_id": chat_id, "text": mensagem, "parse_mode": "HTML", "disable_web_page_preview": True}
     requests.post(url_envio_mensagem, data=dados_mensagem)
-    
     return "ok"
 
+categorias_secundarias = ['ateliê aberto',
+ 'ateliê para família',
+ 'aula aberta',
+ 'bate-papo',
+ 'bibliotecas',
+ 'bicicleta',
+ 'cinema e video',
+ 'concerto',
+ 'contação de histórias',
+ 'corrida',
+ 'curso',
+ 'cursos',
+ 'dança',
+ 'demonstração',
+ 'encontro',
+ 'espetáculo',
+ 'esporte adulto (16+)',
+ 'esporte criança (3 a 6)',
+ 'esporte jovem (10 a 13)',
+ 'esporte jovem (13 a 16)',
+ 'excursão',
+ 'exibição',
+ 'exposição',
+ 'filmes',
+ 'ginástica multifuncional',
+ 'instalação',
+ 'intervenção',
+ 'lançamento',
+ 'leitura literária',
+ 'musical',
+ 'natação e hidroginástica',
+ 'ocupação',
+ 'oficina',
+ 'palestra',
+ 'para crianças',
+ 'para todos os públicos',
+ 'passeio',
+ 'performance',
+ 'recreação',
+ 'recreação aquática',
+ 'recreação campo',
+ 'recreação quadra',
+ 'sarau',
+ 'show',
+ 'tai chi chuan',
+ 'torneios e campeonatos',
+ 'vivência',
+ 'workshop',
+ 'yoga']
 
+def buscar_eventos_sesc():
+    cookies = {
+        'PHPSESSID': 'j6b4gtqbl4jgvh3cigauba0g5h',
+        'LGPD': 'here',
+        'AWSALB': 'Ch2Vs/bxjN9zUuWn0joGjz4FkMsRJqkIirooIN/ULaKiLcx3olCaD4mPPaocMeMJOuxp1+oMeccJl6HZq/6qyh2X18FaLrKocPEDosDBP9I/bjCUiL5BxhLNWGB1',
+        'AWSALBCORS': 'Ch2Vs/bxjN9zUuWn0joGjz4FkMsRJqkIirooIN/ULaKiLcx3olCaD4mPPaocMeMJOuxp1+oMeccJl6HZq/6qyh2X18FaLrKocPEDosDBP9I/bjCUiL5BxhLNWGB1',
+    }
+    headers = {
+        'authority': 'www.sescsp.org.br',
+        'accept': 'application/json, text/plain, */*',
+        'accept-language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
+        'dnt': '1',
+        'referer': 'https://www.sescsp.org.br/programacao/',
+        'sec-ch-ua': '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+        'sec-fetch-dest': 'empty',
+        'sec-fetch-mode': 'cors',
+        'sec-fetch-site': 'same-origin',
+        'sec-gpc': '1',
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    }
+    params = {
+        'data_inicial': '',
+        'data_final': '',
+        'local': '',
+        'categoria': '',
+        'source': 'null',
+        'ppp': '1000',
+        'page': '1',
+        'tipo': 'atividade',
+    }
+    response = requests.get('https://www.sescsp.org.br/wp-json/wp/v1/atividades/filter', params=params, cookies=cookies, headers=headers)
+    return response.json()['atividade']
+
+
+def verificar_novos_eventos(token, chat_id, categorias_secundarias):
+    mongodb_uri = 'mongodb://laura:dXrdqG6zRg3tv4nC@SG-insperdata-44537.servers.mongodirector.com:27017/mjd_laura?ssl=true'
+    db = MongoClient(mongodb_uri, ssl=True, tlsAllowInvalidCertificates=True)['mjd_laura']
+    eventos = buscar_eventos_sesc()
+    for evento in eventos:
+        if db.eventos.find_one({'id': evento['id']}) is None:
+            db.eventos.insert_one(evento)
+
+
+@app.route('/atualizar_eventos_sesc')
+def atualizar_eventos_sesc():
+    token = BOT_TOKEN  # Use o token conforme necessário
+    chat_id = "SEU_CHAT_ID"  # Defina o chat_id conforme necessário
+    verificar_novos_eventos(token, chat_id, categorias_secundarias)
+    return jsonify({"status": "Eventos atualizados com sucesso!"})
 
 if __name__ == "__main__":
     app.run(debug=True)
