@@ -90,3 +90,26 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
+.evento {
+    margin-bottom: 20px; /* Adiciona espaço entre cada evento */
+    padding: 15px; /* Preenchimento interno para não deixar o conteúdo colado nas bordas */
+    border: 1px solid #e7e7e7; /* Uma borda sutil */
+    border-radius: 10px; /* Bordas arredondadas para suavizar o visual */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Uma leve sombra para dar profundidade */
+    background-color: #ffffff; /* Fundo branco para cada evento, destacando do fundo da página */
+}
+
+/* Estilização adicional para imagens dentro de .evento */
+.evento img {
+    border-radius: 5px; /* Bordas arredondadas para as imagens */
+    margin-right: 10px; /* Margem à direita da imagem para separar do texto */
+    float: left; /* Faz com que o texto envolva a imagem */
+}
+
+/* Limpa o float para elementos .evento */
+.evento:after {
+    content: "";
+    display: table;
+    clear: both;
+}
