@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 import os
 import requests
-from app_telegram import verificar_novos_eventos, gerar_texto_bot, enviar_mensagem_telegram
+from app_telegram import gerar_texto_bot, enviar_mensagem_telegram, buscar_eventos_recentes
 
 BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 app = Flask(__name__) # Cria uma instância do Flask.
@@ -44,10 +44,10 @@ def publicacoes():
 def telegram_update():
     update = request.json
     chat_id = update["message"]["chat"]["id"]
-    verificar_novos_eventos()  # Verifica e armazena novos eventos no MongoDB
-    eventos = list(db.eventos.find().sort([('_id', -1)]).limit(5))  # Busca os últimos 5 eventos armazenados
+    eventos = buscar_eventos_recentes()
     texto_resposta = gerar_texto_bot(eventos)
     enviar_mensagem_telegram(chat_id, texto_resposta)
+    return "ok"
     
     return "ok"
 
