@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 import os
 import requests
+from datetime import datetime
 
 
 BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
@@ -45,18 +46,21 @@ def telegram_update():
     update = request.json
     chat_id = update["message"]["chat"]["id"]
     
-    # Busca os últimos 5 eventos armazenados
-    eventos = list(db.eventos.find().sort("dataProxSessao", -1).limit(5))
+    # Busca os últimos 5 eventos armazenados com base no _id (assumindo que o _id reflete a ordem de inserção)
+    eventos = list(db.eventos.find().sort("_id", -1).limit(5))
     
     # Formata a mensagem com os dados dos eventos
     if eventos:
         mensagem = "Oi! Esses são os últimos eventos anunciados no Sesc:\n\n"
         for evento in eventos:
+            # Formata a data do evento
+            data_formatada = datetime.strptime(evento['dataProxSessao'], "%Y-%m-%dT%H:%M").strftime("%d de %B de %Y, às %Hh%M")
+            
             mensagem += f"📅 <b>{evento['titulo']}</b>\n"
             mensagem += f"{evento['complemento']}\n"
-            mensagem += f"Data da próxima sessão: {evento['dataProxSessao']}\n"
-            mensagem += "Categorias: " + ", ".join([categoria['titulo'] for categoria in evento['categorias']]) + "\n"
-            mensagem += f"Link: <a href='https://www.sescsp.org.br{evento['link']}'>Mais informações</a>\n\n"
+            mensagem += f"Data da próxima sessão: {data_formatada}\n"
+            mensagem += "Categorias: " + ", ".join([categoria['titulo'] for categoria in evento.get('categorias', [])]) + "\n"
+            mensagem += f"<a href='https://www.sescsp.org.br{evento['link']}'>Mais informações</a>\n\n"
     else:
         mensagem = "Desculpe, não encontramos eventos recentes no Sesc."
 
