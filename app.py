@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 import os
 import requests
-import os 
+from app_telegram import verificar_novos_eventos, gerar_texto_bot, enviar_mensagem_telegram
 
 BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 app = Flask(__name__) # Cria uma instância do Flask.
@@ -43,12 +43,13 @@ def publicacoes():
 @app.route("/telegram", methods=["POST"])
 def telegram_update():
     update = request.json
-    url_envio_mensagem = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
     chat_id = update["message"]["chat"]["id"]
-    mensagem = {"chat_id": chat_id, "text": "mensagem <b>recebida</b>!", "parse_mode": "HTML"}
-    requests.post(url_envio_mensagem, data=mensagem)
+    verificar_novos_eventos()  # Verifica e armazena novos eventos no MongoDB
+    eventos = list(db.eventos.find().sort([('_id', -1)]).limit(5))  # Busca os últimos 5 eventos armazenados
+    texto_resposta = gerar_texto_bot(eventos)
+    enviar_mensagem_telegram(chat_id, texto_resposta)
+    
     return "ok"
 
-if __name__ == '__main__':
-    # A configuração de debug=True é útil para desenvolvimento, mas deve ser desativada em produção
-    app.run(port=5000, debug=True)
+if __name__ == "__main__":
+    app.run(debug=True)
