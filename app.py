@@ -55,7 +55,6 @@ def telegram_update():
     update = request.json
     chat_id = update["message"]["chat"]["id"]
     data_atual_iso = datetime.now().isoformat()
-
     eventos = list(db.eventos.find({"dataPrimeiraSessao": {"$gte": data_atual_iso}}).sort("dataPrimeiraSessao", 1).limit(20))
 
     if eventos:
