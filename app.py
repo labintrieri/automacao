@@ -21,7 +21,6 @@ meses = {
 
 
 
-# conexão com o MongoDB
 client = MongoClient(mongodb_uri, ssl=True, tlsAllowInvalidCertificates=True)
 db = client[db_name]  
 
@@ -35,7 +34,7 @@ def infos():
 
 @app.route("/sesc")
 def sesc():
-    documentos = list(db.eventos.find().sort("dataProxSessao", -1).limit(10))
+    documentos = list(db.eventos.find().sort("dataPrimeiraSessao", -1).limit(10))
     
     if documentos:
         return render_template('sesc.html', documentos=documentos)
@@ -54,23 +53,34 @@ def publicacoes():
 def telegram_update():
     update = request.json
     chat_id = update["message"]["chat"]["id"]
-    eventos = list(db.eventos.find().sort("dataProxSessao", -1).limit(10))
+    eventos = list(db.eventos.find().sort("dataPrimeiraSessao", -1).limit(10))
     if eventos:
         mensagem = "Oi! Esses são os últimos eventos anunciados no Sesc:\n\n"
         for evento in eventos:
-            # formatar datas
-            data_evento = datetime.strptime(evento['dataProxSessao'], "%Y-%m-%dT%H:%M")
-            dia = data_evento.day
-            mes = meses[data_evento.month]
-            ano = data_evento.year
-            hora = data_evento.strftime("%Hh%M")
-            data_formatada = f"{dia} de {mes} de {ano}, às {hora}"
+            data_primeira_sessao = datetime.strptime(evento['dataPrimeiraSessao'], "%Y-%m-%dT%H:%M")
+            data_ultima_sessao = datetime.strptime(evento['dataUltimaSessao'], "%Y-%m-%dT%H:%M")
+
+            dia_primeira = data_primeira_sessao.day
+            mes_primeira = meses[data_primeira_sessao.month]
+            ano_primeira = data_primeira_sessao.year
+            hora_primeira = data_primeira_sessao.strftime("%Hh%M")
             
+            if data_primeira_sessao == data_ultima_sessao:
+                data_formatada = f"{dia_primeira} de {mes_primeira} de {ano_primeira}, às {hora_primeira}"
+            else:
+                dia_ultima = data_ultima_sessao.day
+                mes_ultima = meses[data_ultima_sessao.month]
+                ano_ultima = data_ultima_sessao.year
+                hora_ultima = data_ultima_sessao.strftime("%Hh%M")
+                data_formatada = f"de {dia_primeira} de {mes_primeira} a {dia_ultima} de {mes_ultima} de {ano_ultima}, às {hora_primeira} a {hora_ultima}"
+
             mensagem += f"📅 <b>{evento['titulo']}</b>\n"
             mensagem += f"{evento['complemento']}\n"
             mensagem += f"Data da próxima sessão: {data_formatada}\n"
             if 'categorias' in evento:
                 mensagem += "Categorias: " + ", ".join(categoria['titulo'] for categoria in evento['categorias']) + "\n"
+            if evento['unidade']:
+                mensagem += "Unidade: " + ", ".join(unidade['name'] for unidade in evento['unidade']) + "\n"
             mensagem += f"<a href='https://www.sescsp.org.br{evento['link']}'>Mais informações</a>\n\n"
     else:
         mensagem = "Desculpe, não encontramos eventos recentes no Sesc."
