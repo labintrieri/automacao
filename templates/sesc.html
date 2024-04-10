@@ -40,7 +40,7 @@
             <img src="{{ evento.imagem }}" alt="Imagem do evento" style="width:100px; height:auto;">
             <h3>{{ evento.titulo }}</h3>
             <p>{{ evento.complemento }}</p>
-            <p>Data da próxima sessão: {{ evento.dataProxSessao }}</p>
+            <p>Data da próxima sessão: {{ evento.dataProxSessaoFormatada }}</p>
             <p>Categorias: 
                 {% for categoria in evento.categorias %}
                     {{ categoria.titulo }}{% if not loop.last %}, {% endif %}

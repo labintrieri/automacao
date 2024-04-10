@@ -3,7 +3,7 @@
 
 - [x] Colocar as páginas que foram criadas no trabalho anterior para funcionar em seu site no Render, usando como base o código feito durante aula com o Flask.
 - [x] Criar pelo menos uma página cujo HTML é gerado dinamicamente e exiba conteúdos derivados de algum processo de captura/limpeza/análise de dados (dê preferência por utilizar algum código que você já tenha feito em outra disciplina).
-- [ ] Implementar um robô do Telegram que possua alguma utilidade (por exemplo, forneça alguma informação ao usuário). Para isso, terá que necessariamente utilizar o Webhook do Telegram (o robô precisa estar online para que possa ser avaliado).
+- [x] Implementar um robô do Telegram que possua alguma utilidade (por exemplo, forneça alguma informação ao usuário). Para isso, terá que necessariamente utilizar o Webhook do Telegram (o robô precisa estar online para que possa ser avaliado).
 
 
 # Organização
@@ -11,7 +11,9 @@
 - Site no Render: <(https://automacao-individual.onrender.com/)>
 - Página dinâmica dentro do site: <(https://automacao-individual.onrender.com/sesc)>
 - Repositório no Github: <https://github.com/labintrieri/automacao-individual>
-- Username no Telegram: <@MeuSescBot>
+- Username no Telegram: <@laura_mjd_bot>
+- Planilhas no Google Sheets:: não aplicável
+- Meu programa envia emails: não
 
 # Apresentação
 
@@ -27,7 +29,8 @@ publicacoes.html - publicações na imprensa
 sesc.html - página dinâmica que exibe conteúdo raspado do portal do Sesc
 
 ## Dificuldades
-Configuração de ambiente para deploy no Render (gunicorn)
+Configuração de ambiente para deploy no Render;
+Separar CSS.
 
 ## Aprendizados
 Independência de templates dos professores e autonomia na resolução de problemas

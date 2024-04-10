@@ -19,6 +19,8 @@ meses = {
     10: "outubro", 11: "novembro", 12: "dezembro"
 }
 
+
+
 # Inicia a conexão com o MongoDB
 client = MongoClient(mongodb_uri, ssl=True, tlsAllowInvalidCertificates=True)
 db = client[db_name]  # Usa o nome do banco de dados correto
@@ -33,8 +35,11 @@ def infos():
 
 @app.route("/sesc")
 def sesc():
-    # Garanta que "eventos" é o nome correto da coleção
-    documentos = list(db.eventos.find().sort("dataProxSessao", -1).limit(10))
+    documentos_brutos = list(db.eventos.find().sort("dataProxSessao", -1).limit(10))
+    documentos = []
+    for doc in documentos_brutos:
+        doc['dataProxSessaoFormatada'] = formatar_data(doc['dataProxSessao'])
+        documentos.append(doc)
     if documentos:
         return render_template('sesc.html', documentos=documentos)
     else:
@@ -83,6 +88,18 @@ def telegram_update():
     requests.post(url_envio_mensagem, data=dados_mensagem)
     
     return "ok"
+
+def formatar_data(data_iso):
+    data_obj = datetime.strptime(data_iso, "%Y-%m-%dT%H:%M")
+    dia = data_obj.day
+    mes = meses[data_obj.month]
+    ano = data_obj.year
+    hora = data_obj.strftime("%H")  # Usa o formato 24h
+    minuto = data_obj.strftime("%M")
+
+    return f"{dia} de {mes} de {ano}, às {hora}h{minuto}"
+
+
 
 
 if __name__ == "__main__":
