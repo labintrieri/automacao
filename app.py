@@ -35,7 +35,7 @@ def infos():
 
 @app.route("/sesc")
 def sesc():
-    documentos = list(db.eventos.find().sort("dataProxSessao", -1).limit(10))
+    documentos = list(db.eventos.find().sort("_id", -1).limit(10))
     
     if documentos:
         return render_template('sesc.html', documentos=documentos)
@@ -54,7 +54,7 @@ def publicacoes():
 def telegram_update():
     update = request.json
     chat_id = update["message"]["chat"]["id"]
-    eventos = list(db.eventos.find().sort("_id", -1).limit(5))
+    eventos = list(db.eventos.find().sort("_id", -1).limit(10))
     if eventos:
         mensagem = "Oi! Esses são os últimos eventos anunciados no Sesc:\n\n"
         for evento in eventos:
