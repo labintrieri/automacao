@@ -1,43 +1,74 @@
-# Master em Jornalismo de Dados - Insper
-## Parte individual do trabalho final da disciplina Algoritmos de Automação
+# Portfólio Automatizado
 
-- [x] Colocar as páginas que foram criadas no trabalho anterior para funcionar em seu site no Render, usando como base o código feito durante aula com o Flask.
-- [x] Criar pelo menos uma página cujo HTML é gerado dinamicamente e exiba conteúdos derivados de algum processo de captura/limpeza/análise de dados (dê preferência por utilizar algum código que você já tenha feito em outra disciplina).
-- [x] Implementar um robô do Telegram que possua alguma utilidade (por exemplo, forneça alguma informação ao usuário). Para isso, terá que necessariamente utilizar o Webhook do Telegram (o robô precisa estar online para que possa ser avaliado).
+Site de portfólio pessoal com funcionalidades de automação, incluindo raspagem de dados e integração com Telegram.
 
+**Trabalho final da disciplina Algoritmos de Automação** — [Master em Jornalismo de Dados, Insper](https://www.insper.edu.br/pos-graduacao/master-em-jornalismo-de-dados-automacao-e-data-storytelling/)
 
-# Organização
+## Sobre o Projeto
 
-- Site no Render: <(https://automacao-rby3.onrender.com/)>
-- Página dinâmica dentro do site: <(https://automacao-rby3.onrender.com/sesc)>
-- Repositório no Github: <https://github.com/labintrieri/automacao>
-- Username no Telegram: <@laura_mjd_bot>
-- Planilhas no Google Sheets:: não aplicável
-- Meu programa envia emails: não
+Este projeto foi desenvolvido para reunir em um só lugar:
+- Publicações jornalísticas
+- Projetos em jornalismo de dados
+- Informações profissionais de contato
 
-# Apresentação
+### Funcionalidades
 
-## Motivações para o desenvolvimento dessa solução
-O site foi desenvolvido para que a jornalista reúnia em uma só página suas principais publicações, projetos em jornalismo de dados e informações profissionais.
-## Principais partes do código
+- **Página dinâmica de eventos do Sesc**: Exibe automaticamente os próximos eventos culturais do Sesc SP, com dados raspados e armazenados em MongoDB
+- **Bot do Telegram** *(atualmente desativado)*: Respondia com a programação do Sesc quando acionado
 
-app.py - código python que automatiza o site
-index.html - página inicial que apresenta mapa da página
-infos.html - informações para contato
-projetos.html - projetos em jornalismo de dados
-publicacoes.html - publicações na imprensa
-sesc.html - página dinâmica que exibe conteúdo raspado do portal do Sesc
+## Tecnologias
 
-## Dificuldades
-Configuração de ambiente para deploy no Render;
-Separar CSS.
+- **Backend**: Python, Flask
+- **Banco de dados**: MongoDB
+- **Deploy**: Render
+- **Integrações**: API do Telegram (webhook)
 
-## Aprendizados
-Independência de templates dos professores e autonomia na resolução de problemas.
+## Estrutura do Projeto
 
-# Entregáveis:
-- [x] Conteúdo do repositório em formato ZIP (na página do repositório no Github, clique em "Code" > "Download ZIP").
-- [x] Link para o repositório no Github (público).
-- [x] Link para seu site no Render e da página dinâmica.
-- [x] Username do robô no Telegram (caso use o robô).
-- [x] Apresentar o trabalho por 3 a 5 minutos durante a última aula da disciplina (10/04).
+```
+├── app.py              # Aplicação Flask principal
+├── requirements.txt    # Dependências Python
+├── templates/
+│   ├── index.html      # Página inicial
+│   ├── infos.html      # Informações de contato
+│   ├── projetos.html   # Projetos de jornalismo de dados
+│   ├── publicacoes.html # Publicações na imprensa
+│   └── sesc.html       # Página dinâmica com eventos do Sesc
+└── static/             # Arquivos estáticos (CSS, imagens)
+```
+
+## Demo
+
+> **Nota**: A demo pode estar offline devido às limitações do plano gratuito do Render (o serviço "adormece" após inatividade).
+
+- Site: https://automacao-rby3.onrender.com/
+- Página dinâmica: https://automacao-rby3.onrender.com/sesc
+
+## Executando Localmente
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/labintrieri/automacao.git
+   cd automacao
+   ```
+
+2. Instale as dependências:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Configure as variáveis de ambiente:
+   ```bash
+   export MONGO_URI="sua_uri_mongodb"
+   export MONGO_ID="nome_do_banco"
+   export TELEGRAM_BOT_TOKEN="seu_token"  # opcional
+   ```
+
+4. Execute a aplicação:
+   ```bash
+   python app.py
+   ```
+
+## Licença
+
+Este projeto está licenciado sob a MIT License - veja o arquivo [LICENSE](LICENSE) para detalhes.
